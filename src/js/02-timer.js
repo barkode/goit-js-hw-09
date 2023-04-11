@@ -24,8 +24,6 @@ const options = {
       btnStart.disabled = true;
       return;
     }
-    console.log(Date());
-    console.log(Date.now());
     btnStart.disabled = false;
   },
 };
@@ -41,7 +39,7 @@ function startTimer() {
   btnStop.disabled = false;
   btnStart.disabled = true;
   timerId = setInterval(() => {
-    const endTime = timerTimeChoise - Date.now();
+    const endTime = timerTimeChoise - new Date();
     if (endTime <= 0) {
       clearInterval(timerId);
       Notify.success('TIME IS OFF!!!!');
