@@ -24,6 +24,8 @@ const options = {
       btnStart.disabled = true;
       return;
     }
+    console.log(Date());
+    console.log(Date.now());
     btnStart.disabled = false;
   },
 };
@@ -39,7 +41,7 @@ function startTimer() {
   btnStop.disabled = false;
   btnStart.disabled = true;
   timerId = setInterval(() => {
-    const endTime = timerTimeChoise - new Date();
+    const endTime = timerTimeChoise - Date.now();
     if (endTime <= 0) {
       clearInterval(timerId);
       Notify.success('TIME IS OFF!!!!');
@@ -59,10 +61,6 @@ function stopTimer() {
   btnStart.disabled = false;
   Notify.failure('Countdows stoped.');
   clearInterval(timerId);
-  fieldDays.textContent = '00';
-  fieldHours.textContent = '00';
-  fieldMinutes.textContent = '00';
-  fieldSeconds.textContent = '00';
 }
 
 function addLeadingZero(value) {
