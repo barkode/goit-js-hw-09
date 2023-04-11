@@ -1,4 +1,4 @@
-import { Notify } from 'notiflix';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 
 const startBtn = document.querySelector('[data-start]');
