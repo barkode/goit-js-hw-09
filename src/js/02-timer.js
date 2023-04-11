@@ -3,11 +3,12 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 const btnStart = document.querySelector('[data-start]');
-//const btnStop = document.querySelector('[data-stop]');
+const btnStop = document.querySelector('[data-stop]');
 const fieldDays = document.querySelector('[data-days]');
 const fieldHours = document.querySelector('[data-hours]');
 const fieldMinutes = document.querySelector('[data-minutes]');
 const fieldSeconds = document.querySelector('[data-seconds]');
+const TIMER_DELAY = -1000;
 
 const options = {
   enableTime: true,
@@ -24,11 +25,20 @@ const options = {
   },
 };
 
-//btnStop.disabled = true;
+btnStop.disabled = true;
 btnStart.disabled = true;
+btnStart.addEventListener('click', startTimer);
 
 const fp = flatpickr('#datetime-picker', options);
-console.log(fp.selectedDates[0]);
+
+function startTimer() {
+  btnStop.disabled = true;
+  btnStart.disabled = true;
+  setInterval(() => {
+    const timerTime = fp.selectedDates[0] - Date.now();
+    console.log(convertMs(timerTime));
+  }, TIMER_DELAY);
+}
 
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
