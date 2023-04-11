@@ -10,6 +10,7 @@ const fieldMinutes = document.querySelector('[data-minutes]');
 const fieldSeconds = document.querySelector('[data-seconds]');
 const TIMER_DELAY = 1000;
 let timerId = null;
+let timerTimeChoise = null;
 
 const options = {
   enableTime: true,
@@ -17,7 +18,8 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    if (selectedDates[0] < new Date()) {
+    timerTimeChoise = selectedDates[0];
+    if (timerTimeChoise < new Date()) {
       Notify.failure('Please choose a date in the future');
       btnStart.disabled = true;
       return;
@@ -31,20 +33,20 @@ btnStart.disabled = true;
 btnStart.addEventListener('click', startTimer);
 btnStop.addEventListener('click', stopTimer);
 
-const fp = flatpickr('#datetime-picker', options);
+flatpickr('#datetime-picker', options);
 
 function startTimer() {
   btnStop.disabled = false;
   btnStart.disabled = true;
   timerId = setInterval(() => {
-    const timerTime = fp.selectedDates[0] - new Date();
-    if (timerTime <= 0) {
+    const endTime = timerTimeChoise - new Date();
+    if (endTime <= 0) {
       clearInterval(timerId);
       Notify.success('TIME IS OFF!!!!');
       btnStop.disabled = true;
       return;
     }
-    const { days, hours, minutes, seconds } = convertMs(timerTime);
+    const { days, hours, minutes, seconds } = convertMs(endTime);
     fieldDays.textContent = addLeadingZero(days);
     fieldHours.textContent = addLeadingZero(hours);
     fieldMinutes.textContent = addLeadingZero(minutes);
