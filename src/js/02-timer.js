@@ -1,5 +1,7 @@
 import { Notify } from 'notiflix';
+import { Report } from 'notiflix/build/notiflix-report-aio';
 import flatpickr from 'flatpickr';
+
 import 'flatpickr/dist/flatpickr.min.css';
 
 const btnStart = document.querySelector('[data-start]');
@@ -8,7 +10,8 @@ const fieldDays = document.querySelector('[data-days]');
 const fieldHours = document.querySelector('[data-hours]');
 const fieldMinutes = document.querySelector('[data-minutes]');
 const fieldSeconds = document.querySelector('[data-seconds]');
-const TIMER_DELAY = -1000;
+const TIMER_DELAY = 1000;
+let timerId = null;
 
 const options = {
   enableTime: true,
@@ -28,16 +31,38 @@ const options = {
 btnStop.disabled = true;
 btnStart.disabled = true;
 btnStart.addEventListener('click', startTimer);
+btnStop.addEventListener('click', stopTimer);
 
 const fp = flatpickr('#datetime-picker', options);
 
 function startTimer() {
-  btnStop.disabled = true;
+  btnStop.disabled = false;
   btnStart.disabled = true;
-  setInterval(() => {
-    const timerTime = fp.selectedDates[0] - Date.now();
-    console.log(convertMs(timerTime));
+  timerId = setInterval(() => {
+    const timerTime = fp.selectedDates[0] - new Date();
+    if (timerTime <= 0) {
+      clearInterval(timerId);
+      Notify.success('TIME IS OFF!!!!');
+      btnStop.disabled = true;
+      return;
+    }
+    const { days, hours, minutes, seconds } = convertMs(timerTime);
+    fieldDays.textContent = addLeadingZero(days);
+    fieldHours.textContent = addLeadingZero(hours);
+    fieldMinutes.textContent = addLeadingZero(minutes);
+    fieldSeconds.textContent = addLeadingZero(seconds);
   }, TIMER_DELAY);
+}
+
+function stopTimer() {
+  btnStop.disabled = true;
+  btnStart.disabled = false;
+  Notify.failure('Countdows stoped.');
+  clearInterval(timerId);
+  fieldDays.textContent = '00';
+  fieldHours.textContent = '00';
+  fieldMinutes.textContent = '00';
+  fieldSeconds.textContent = '00';
 }
 
 function addLeadingZero(value) {
