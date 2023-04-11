@@ -1,7 +1,5 @@
 import { Notify } from 'notiflix';
-import { Report } from 'notiflix/build/notiflix-report-aio';
 import flatpickr from 'flatpickr';
-
 import 'flatpickr/dist/flatpickr.min.css';
 
 const btnStart = document.querySelector('[data-start]');
