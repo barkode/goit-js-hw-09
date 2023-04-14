@@ -19,7 +19,7 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     timerTimeChoise = selectedDates[0];
-    if (timerTimeChoise < new Date()) {
+    if (timerTimeChoise < Date.now()) {
       Notify.failure('Please choose a date in the future');
       btnStart.disabled = true;
       return;
@@ -39,7 +39,7 @@ function startTimer() {
   btnStop.disabled = false;
   btnStart.disabled = true;
   timerId = setInterval(() => {
-    const endTime = timerTimeChoise - new Date();
+    const endTime = timerTimeChoise - Date.now();
     if (endTime <= 0) {
       clearInterval(timerId);
       Notify.success('TIME IS OFF!!!!');
